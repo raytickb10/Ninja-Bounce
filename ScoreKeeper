@@ -1,0 +1,71 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class ScoreKeeper : MonoBehaviour {
+	
+	public static int leftScore;
+	public static int rightScore;
+	
+	public Text leftScoreText;
+	public Text rightScoreText;
+	
+	public Text leftWinText;
+	public Text rightWinText;
+	
+	public GameObject myButton;
+	
+
+	// Begins by initializing the variables for both the score
+	// and the winning text message that will be displayed at
+	// the end of the game.
+	void Start () 
+	{		
+		leftScore = 0;
+		rightScore = 0;
+		
+		leftWinText.text = "";
+		rightWinText.text = "";
+		
+	}
+	
+	// This is called from the ninja star when it
+	// hits the wall to say that a point has been
+	// scored for the right team.
+	public void rightScoreIncreases()
+	{
+		rightScore++;
+	}
+	
+	// This is called when the left team scores.
+	public void leftScoreIncreases()
+	{
+		leftScore++;
+	}
+	
+	// Keeps up with the score throughout the game as well
+	// as assigns the winning team upon them scoring 15 points.
+	void Update () 
+	{
+		leftScoreText.text = "" + leftScore;
+		rightScoreText.text = "" + rightScore;
+		
+		if (leftScore >= 15)
+		{
+			leftWinText.text = "LeftPlayerWins!";
+			myButton.SetActive(true);
+		}
+		else if (rightScore >= 15)
+		{
+			rightWinText.text = "RightPlayerWins!";
+			myButton.SetActive(true);
+		}
+	}
+	
+	// At the end of the game a button can be pressed to
+	// begin the game again which is handled by this function.
+	public void ReplayGame ()
+	{
+		Application.LoadLevel (0);
+	}
+}
