@@ -8,24 +8,29 @@ public class RedNinjaController : MonoBehaviour {
 	
 	Animator anim;
 	
+	// Variables used to determine whether or not character is on the ground
 	bool grounded = false;
 	public Transform groundCheck;
 	float groundRadius = 0.2f;
 	public LayerMask whatIsGround;
 	public float jumpForce = 400f;
 	
+	// Variabes used to determine whether or not character is clinging to a wall
 	bool wallCling = false;
 	public Transform wallCheck;
 	float wallRadius = 0.4f;
 	public LayerMask whatIsWall;
 
-	// Use this for initialization
+	// Begins to find the animator so the idle animation will begin and so
+	// the other animations will be prepared for their eventual use.
 	void Start () 
 	{
 		anim = GetComponent<Animator>();
 	}
 	
-	// Update is called once per frame
+	// Updates with whether or not the character is on the ground and how
+	// fast they are moving in order to determine which animation to use,
+	// also which direction they face is also determined.
 	void FixedUpdate () 
 	{
 		grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
@@ -48,6 +53,9 @@ public class RedNinjaController : MonoBehaviour {
 		}
 	}
 	
+	// When the player presses the W key their character should jump once
+	// they should not be able to jump again until they touch the ground
+	// or cling to a wall.
 	void Update()
 	{
 		if(grounded && Input.GetKeyDown(KeyCode.W))
@@ -62,6 +70,8 @@ public class RedNinjaController : MonoBehaviour {
 		}
 	}
 	
+	// This is the function that will flip the character to the
+	// direction they are currently moving towards.
 	void Flip()
 	{
 		facingRight = !facingRight;
