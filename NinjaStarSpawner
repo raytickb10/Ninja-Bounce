@@ -1,0 +1,43 @@
+using UnityEngine;
+using System.Collections;
+
+public class NinjaStarSpawner : MonoBehaviour {
+	
+	public GameObject star;
+	public GameObject GameController;
+	
+	// Updates the ninja star so that it will continue to spin
+	// throughout the game.
+	void Update () 
+	{
+		transform.Rotate(0, 0, -5f);
+	}
+	
+	// Upon collision with one of the two walls a message is sent to score points
+	// for the respective side as well as begin spawning a new ninja star
+	// and disposing of the old one.
+	void OnCollisionEnter2D(Collision2D other)
+	{
+		if (other.gameObject.name == "LeftWall_Score")
+		{
+			Instantiate(star, new Vector3(0,0,1), Quaternion.identity);
+			ScoreKeeper sk = GameController.GetComponent<ScoreKeeper>();
+			sk.rightScoreIncreases();
+			StartCoroutine(MyCoroutine());
+		}
+		if (other.gameObject.name == "RightWall_Score")
+		{
+			Instantiate(star, new Vector3(0,0,1), Quaternion.identity);
+			ScoreKeeper sk = GameController.GetComponent<ScoreKeeper>();
+			sk.leftScoreIncreases();			
+			StartCoroutine(MyCoroutine());
+		}
+	}
+	
+	// The ninja star that was used to score is now destroyed.
+	IEnumerator MyCoroutine()
+	{
+		yield return new WaitForSeconds(0.1f);
+		Destroy(gameObject);
+	}
+}
